@@ -1,0 +1,35 @@
+/* h2 {
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+} */
+
+.tienda-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.productos-lista {
+    margin-bottom: 20px;
+}
+
+.producto-info {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.sin-productos {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+}

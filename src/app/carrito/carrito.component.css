@@ -1,0 +1,31 @@
+.carrito-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.carrito-lista {
+    margin-bottom: 20px;
+}
+
+.producto-info {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.producto-controles {
+    display: flex;
+    align-items: center;
+}
+
+.total-compra {
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.carrito-vacio {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+}

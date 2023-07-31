@@ -1,0 +1,67 @@
+<mat-card class="gestion-productos-container">
+  <h2>Gestión de Productos</h2>
+  <h2>Productos existentes:</h2>
+  <ul>
+    <li *ngFor="let producto of productos">
+      <h3>{{ producto.nombre }}</h3>
+      <p><strong>Precio:</strong> {{ producto.precio | currency }}</p>
+      <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+      <p><strong>Categoría:</strong> {{ producto.categoria }}</p>
+      <p><strong>Foto:</strong><img width="100px" height="100px" *ngIf="producto.foto" [src]="producto.foto" alt="Foto del producto"></p>
+      <button (click)="eliminarProducto(producto._id)">Eliminar</button>
+      <button (click)="mostrarDetalleProducto(producto)">Editar</button>
+    </li>
+  </ul>
+
+  <hr>
+
+  <h2>Agregar nuevo producto:</h2>
+  <form [formGroup]="productoForm" (ngSubmit)="agregarProducto()" *ngIf="!productoSeleccionado">
+    <div>
+      <label>Nombre:</label>
+      <input type="text" formControlName="nombre">
+    </div>
+    <div>
+      <label>Precio:</label>
+      <input type="number" formControlName="precio">
+    </div>
+    <div>
+      <label>Descripción:</label>
+      <input type="text" formControlName="descripcion">
+    </div>
+    <div>
+      <label>Categoría:</label>
+      <input type="text" formControlName="categoria">
+    </div>
+    <div>
+      <label>Seleccionar foto:</label>
+      <input type="file" (change)="onFileSelected($event)">
+    </div>
+    <img *ngIf="imagenURL" [src]="imagenURL" alt="Foto del producto">
+    <button type="submit" [disabled]="productoForm.invalid">Agregar</button>
+
+  </form>
+
+  <h2>Editar producto:</h2>
+  <form [formGroup]="productoForm" (ngSubmit)="actualizarProducto(productoSeleccionado._id)"
+    *ngIf="productoSeleccionado">
+    <div>
+      <label>Nombre:</label>
+      <input type="text" formControlName="nombre">
+    </div>
+    <div>
+      <label>Precio:</label>
+      <input type="number" formControlName="precio">
+    </div>
+    <div>
+      <label>Descripción:</label>
+      <input type="text" formControlName="descripcion">
+    </div>
+    <div>
+      <label>Categoría:</label>
+      <input type="text" formControlName="categoria">
+    </div>
+    <button type="submit" [disabled]="productoForm.invalid">Agregar</button>
+    <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+  </form>
+</mat-card>

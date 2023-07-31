@@ -1,0 +1,27 @@
+<mat-card class="carrito-container">
+    <div *ngIf="productosEnCarrito.length > 0" class="carrito-lista">
+        <h2>Carrito de Compra:</h2>
+        <ul>
+            <li *ngFor="let producto of productosEnCarrito">
+                <mat-card class="producto-info">
+                    <h3>{{ producto.nombre }}</h3>
+
+                    <p><strong>Foto:</strong><img width="100px" height="100px" *ngIf="producto.foto" [src]="producto.foto" alt="Foto del producto"></p>
+                    
+                    <p><strong>Precio por unidad:</strong> {{ producto.precio | currency }}</p>
+                    <mat-form-field class="producto-controles">
+                        <mat-label>Cantidad:</mat-label>
+                        <input matInput type="number" [(ngModel)]="producto.cantidad"
+                            (change)="ajustarCantidadProducto(producto._id, producto.cantidad)">
+                        <button mat-button (click)="eliminarDelCarrito(producto._id)">Eliminar del carrito</button>
+                    </mat-form-field>
+                    <p><strong>Precio total:</strong> {{ (producto.precio * producto.cantidad) | currency }}</p>
+                </mat-card>
+            </li>
+        </ul>
+        <p class="total-compra"><strong>Total de la compra:</strong> {{ totalCompra | currency }}</p>
+    </div>
+    <div *ngIf="productosEnCarrito.length === 0" class="carrito-vacio">
+        <p>No hay productos en el carrito.</p>
+    </div>
+</mat-card>

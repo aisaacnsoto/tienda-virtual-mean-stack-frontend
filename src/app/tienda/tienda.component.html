@@ -1,0 +1,20 @@
+<mat-card class="tienda-container">
+  <div *ngIf="productos.length > 0" class="productos-lista">
+    <h2>Productos disponibles:</h2>
+    <ul>
+      <li *ngFor="let producto of productos">
+        <mat-card class="producto-info">
+          <h3>{{ producto.nombre }}</h3>
+          <p><strong>Precio:</strong> {{ producto.precio | currency }}</p>
+          <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+          <p><strong>Categoría:</strong> {{ producto.categoria }}</p>
+          <p><strong>Foto:</strong><img width="100px" height="100px" *ngIf="producto.foto" [src]="producto.foto" alt="Foto del producto"></p>
+          <button mat-raised-button color="primary" (click)="agregarAlCarrito(producto)">Agregar al carrito</button>
+        </mat-card>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="productos.length === 0" class="sin-productos">
+    <p>No hay productos disponibles.</p>
+  </div>
+</mat-card>
