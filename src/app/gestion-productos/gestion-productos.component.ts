@@ -12,7 +12,7 @@ import { Producto } from 'src/app/models/producto.model';
 export class GestionProductosComponent implements OnInit {
   productos: Producto[] = [];
 
-  apiUrl = 'http://localhost:3000';
+  apiUrl = 'https://tienda-virtual-mean-stack-backend.onrender.com';
 
   productoForm: FormGroup;
 

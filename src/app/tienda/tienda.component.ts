@@ -14,7 +14,7 @@ export class TiendaComponent implements OnInit {
 
   constructor(private http: HttpClient, private carritoService: CarritoService) { }
 
-  apiUrl = 'http://localhost:3000';
+  apiUrl = 'https://tienda-virtual-mean-stack-backend.onrender.com';
 
   ngOnInit(): void {
     this.obtenerProductos();
