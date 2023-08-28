@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Producto } from 'src/app/models/producto.model';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogComponent } from '../components/dialog/dialog.component';
+import { ProductoService } from '../services/producto.service';
 
 
 @Component({
@@ -13,131 +16,50 @@ export class GestionProductosComponent implements OnInit {
   productos: Producto[] = [];
   displayedColumns: string[] = ['foto', 'nombre', 'precio', 'descripcion', 'categoria', 'acciones'];
 
-  // apiUrl = 'https://tienda-virtual-mean-stack-backend.onrender.com';
-  apiUrl = 'http://localhost:3000';
-
-  productoForm: FormGroup;
-
-  nuevoProducto: Producto = {
-    _id: '',
-    nombre: '',
-    precio: 0,
-    descripcion: '',
-    categoria: ''
-  };
-
-  productoSeleccionado: Producto | null = null;
-
-  selectedFile: File | null = null;
-
-  imagenURL: string | ArrayBuffer | null = null;
-
   constructor(
-    private http: HttpClient, private formBuilder: FormBuilder
+    private _productService: ProductoService,
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    this.productoForm = this.formBuilder.group({
-      nombre: ['', Validators.required],
-      precio: [0, [Validators.required, Validators.min(0)]],
-      descripcion: [''],
-      categoria: ['']
-    });
-
     this.obtenerProductos();
   }
+  
+  onCreateClick() {
+    this.openDialog();
+  }
 
-  onFileSelected(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.files && inputElement.files.length > 0) {
-      this.selectedFile = inputElement.files[0];
+  onEditClick(producto: Producto) {
+    this.openDialog(producto);
+  }
 
-      // Mostrar la vista previa de la imagen seleccionada
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imagenURL = e.target?.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
-    }
+  onDeleteClick(id: string) {
+    this.eliminarProducto(id);
+  }
+
+  openDialog(producto?: Producto) {
+    this.dialog.open(DialogComponent, {
+      disableClose: true,
+      width: '300px',
+      data: producto
+    }).afterClosed().subscribe(result => {
+      if (result === 'editado' || result === 'creado') {
+        this.obtenerProductos();
+      }
+    });
   }
 
   obtenerProductos(): void {
-    this.http.get<Producto[]>(this.apiUrl + '/api/productos')
-      .subscribe(productos => this.productos = productos);
-  }
-
-  agregarProducto(): void {
-    if (this.productoForm.invalid) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('nombre', this.productoForm.value.nombre);
-    formData.append('precio', this.productoForm.value.precio);
-    formData.append('descripcion', this.productoForm.value.descripcion);
-    formData.append('categoria', this.productoForm.value.categoria);
-
-    if (this.selectedFile) {
-      formData.append('foto', this.selectedFile, this.selectedFile.name);
-    }
-
-    this.http.post<Producto>(this.apiUrl + '/api/productos', formData)
-      .subscribe(productoAgregado => {
-        productoAgregado.foto = this.apiUrl+'/'+productoAgregado.foto;
-        this.obtenerProductos();
-        this.productoForm.reset();
-        this.selectedFile = null;
-        this.imagenURL = null;
-      });
+    this._productService.getProducts().subscribe(productos => this.productos = productos);
   }
 
   eliminarProducto(id: string): void {
-    this.http.delete(this.apiUrl + `/api/productos/${id}`)
+    this._productService.deleteProduct(id)
       .subscribe(() => {
         this.productos = this.productos.filter(producto => producto._id !== id);
-        if (this.productoSeleccionado?._id === id) {
-          this.cancelarEdicion();
-        }
       });
   }
-
-  actualizarProducto(id: string): void {
-    if (this.productoForm.invalid) {
-      return;
-    }
-
-    const productoActualizado: Producto = {
-      _id: id,
-      nombre: this.productoForm.value.nombre,
-      precio: this.productoForm.value.precio,
-      descripcion: this.productoForm.value.descripcion,
-      categoria: this.productoForm.value.categoria
-    };
-
-    this.http.put<Producto>(`${this.apiUrl}/api/productos/${id}`, productoActualizado)
-      .subscribe(producto => {
-        const index = this.productos.findIndex(p => p._id === id);
-        if (index !== -1) {
-          this.productos[index] = producto;
-        }
-        this.productoForm.reset();
-      });
-  }
-
-  mostrarDetalleProducto(producto: Producto): void {
-    this.productoForm.setValue({
-      nombre: producto.nombre,
-      precio: producto.precio,
-      descripcion: producto.descripcion,
-      categoria: producto.categoria
-    });
-    this.productoSeleccionado = producto;
-  }
-
-  cancelarEdicion(): void {
-    this.productoForm.reset();
-    this.productoSeleccionado = null;
-  }
-
 
 }

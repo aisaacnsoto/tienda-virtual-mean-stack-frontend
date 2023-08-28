@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GestionProductosComponent } from './gestion-productos/gestion-productos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarritoComponent } from './carrito/carrito.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -17,6 +18,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { PasarelaPagoComponent } from './components/pasarela-pago/pasarela-pago.component';
 
 
 @NgModule({
@@ -24,7 +29,9 @@ import { MatIconModule } from '@angular/material/icon';
     AppComponent,
     TiendaComponent,
     GestionProductosComponent,
-    CarritoComponent
+    CarritoComponent,
+    DialogComponent,
+    PasarelaPagoComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +47,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatTableModule,
     MatIconModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatGridListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

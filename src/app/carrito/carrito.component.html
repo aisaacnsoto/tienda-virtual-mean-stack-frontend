@@ -46,7 +46,9 @@
         </table>
 
         <p class="total-compra"><strong>Total de la compra:</strong> {{ totalCompra | currency }}</p>
-        <div id="paypal-buttons"></div>
+
+        <app-pasarela-pago [amount]="totalCompra"></app-pasarela-pago>
+
     </div>
     <div *ngIf="productosEnCarrito.length === 0" class="carrito-vacio">
         <p>No hay productos en el carrito.</p>
