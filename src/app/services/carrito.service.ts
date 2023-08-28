@@ -15,14 +15,15 @@ export class CarritoService {
       producto.cantidad = 1;
       this.productos.push(producto);
     }
+    this.guardarEnLocalStorage();
   }
 
   eliminarDelCarrito(id: string): void {
     this.productos = this.productos.filter(producto => producto._id !== id);
+    this.guardarEnLocalStorage();
   }
 
   obtenerProductosEnCarrito(): Producto[] {
-    console.log(JSON.stringify(this.productos));
     return this.productos;
   }
 
@@ -35,9 +36,20 @@ export class CarritoService {
         this.eliminarDelCarrito(id);
       }
     }
+    this.guardarEnLocalStorage();
   }
 
   vaciarCarrito(): void {
     this.productos = [];
+    this.guardarEnLocalStorage();
+  }
+
+  guardarEnLocalStorage(): void {
+    localStorage.setItem('cart', JSON.stringify(this.productos));
+  }
+
+  cargarDeLocalStorage(): void {
+    if (!localStorage.getItem('cart')) localStorage.setItem('cart', '[]');
+    this.productos = JSON.parse(localStorage.getItem('cart'));
   }
 }

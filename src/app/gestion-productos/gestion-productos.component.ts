@@ -11,8 +11,10 @@ import { Producto } from 'src/app/models/producto.model';
 })
 export class GestionProductosComponent implements OnInit {
   productos: Producto[] = [];
+  displayedColumns: string[] = ['foto', 'nombre', 'precio', 'descripcion', 'categoria', 'acciones'];
 
-  apiUrl = 'https://tienda-virtual-mean-stack-backend.onrender.com';
+  // apiUrl = 'https://tienda-virtual-mean-stack-backend.onrender.com';
+  apiUrl = 'http://localhost:3000';
 
   productoForm: FormGroup;
 
@@ -81,7 +83,8 @@ export class GestionProductosComponent implements OnInit {
 
     this.http.post<Producto>(this.apiUrl + '/api/productos', formData)
       .subscribe(productoAgregado => {
-        this.productos.push(productoAgregado);
+        productoAgregado.foto = this.apiUrl+'/'+productoAgregado.foto;
+        this.obtenerProductos();
         this.productoForm.reset();
         this.selectedFile = null;
         this.imagenURL = null;

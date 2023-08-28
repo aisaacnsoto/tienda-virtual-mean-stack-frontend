@@ -1,25 +1,52 @@
 <mat-card class="carrito-container">
     <div *ngIf="productosEnCarrito.length > 0" class="carrito-lista">
         <h2>Carrito de Compra:</h2>
-        <ul>
-            <li *ngFor="let producto of productosEnCarrito">
-                <mat-card class="producto-info">
-                    <h3>{{ producto.nombre }}</h3>
 
-                    <p><strong>Foto:</strong><img width="100px" height="100px" *ngIf="producto.foto" [src]="producto.foto" alt="Foto del producto"></p>
-                    
-                    <p><strong>Precio por unidad:</strong> {{ producto.precio | currency }}</p>
-                    <mat-form-field class="producto-controles">
-                        <mat-label>Cantidad:</mat-label>
-                        <input matInput type="number" [(ngModel)]="producto.cantidad"
-                            (change)="ajustarCantidadProducto(producto._id, producto.cantidad)">
-                        <button mat-button (click)="eliminarDelCarrito(producto._id)">Eliminar del carrito</button>
+        <table mat-table [dataSource]="productosEnCarrito" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="product_details">
+                <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                <td mat-cell *matCellDef="let element">
+                    <img width="100px" height="100px" *ngIf="element.foto" [src]="element.foto" alt="Foto del producto">
+                    <h3>{{ element.nombre }}</h3>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Precio</th>
+                <td mat-cell *matCellDef="let element">{{ element.precio | currency }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-form-field appearance="outline">
+                        <input matInput type="number" [(ngModel)]="element.cantidad"
+                            (change)="ajustarCantidadProducto(element._id, element.cantidad)">
                     </mat-form-field>
-                    <p><strong>Precio total:</strong> {{ (producto.precio * producto.cantidad) | currency }}</p>
-                </mat-card>
-            </li>
-        </ul>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Remover</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="warn" (click)="eliminarDelCarrito(element._id)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef>Total</th>
+                <td mat-cell *matCellDef="let element">{{ (element.precio * element.cantidad) | currency }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
         <p class="total-compra"><strong>Total de la compra:</strong> {{ totalCompra | currency }}</p>
+        <div id="paypal-buttons"></div>
     </div>
     <div *ngIf="productosEnCarrito.length === 0" class="carrito-vacio">
         <p>No hay productos en el carrito.</p>

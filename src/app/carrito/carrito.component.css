@@ -1,5 +1,5 @@
 .carrito-container {
-    max-width: 600px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -11,11 +11,6 @@
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 10px;
-}
-
-.producto-controles {
-    display: flex;
-    align-items: center;
 }
 
 .total-compra {

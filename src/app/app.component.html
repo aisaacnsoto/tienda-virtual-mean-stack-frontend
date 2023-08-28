@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <a mat-button routerLink="/">Inicio</a>
     <a mat-button routerLink="/gestion-productos">Gestión de Productos</a>
-    <a mat-button routerLink="/carrito">Carrito de Compra</a>
+    <a mat-button routerLink="/carrito">Carrito de Compra ({{cart.productos.length}})</a>
 </mat-toolbar>
 <router-outlet></router-outlet>
