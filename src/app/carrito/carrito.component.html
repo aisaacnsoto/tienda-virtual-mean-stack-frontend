@@ -44,10 +44,25 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-
+        <br>
         <p class="total-compra"><strong>Total de la compra:</strong> {{ totalCompra | currency }}</p>
 
-        <app-pasarela-pago [amount]="totalCompra"></app-pasarela-pago>
+        <form [formGroup]="customerForm">
+            <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="name" type="text">
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Correo electrónico</mat-label>
+                    <input matInput formControlName="email" type="email">
+                </mat-form-field>
+            </p>
+        </form>
+
+        <app-pasarela-pago [amount]="totalCompra" [customer]="customerForm.value" [proceed]="customerForm.valid"></app-pasarela-pago>
 
     </div>
     <div *ngIf="productosEnCarrito.length === 0" class="carrito-vacio">

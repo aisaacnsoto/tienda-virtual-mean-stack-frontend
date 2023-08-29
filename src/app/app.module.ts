@@ -22,6 +22,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { PasarelaPagoComponent } from './components/pasarela-pago/pasarela-pago.component';
+import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.component';
+import { ConfirmationPageComponent } from './pages/confirmation-page/confirmation-page.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { PasarelaPagoComponent } from './components/pasarela-pago/pasarela-pago.
     GestionProductosComponent,
     CarritoComponent,
     DialogComponent,
-    PasarelaPagoComponent
+    PasarelaPagoComponent,
+    CheckoutPageComponent,
+    ConfirmationPageComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CarritoService } from '../services/carrito.service';
 import { Producto } from 'src/app/models/producto.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -13,12 +14,21 @@ export class CarritoComponent implements OnInit {
   displayedColumns: string[] = ['product_details', 'price', 'quantity', 'total', 'actions'];
   totalCompra: number = 0;
 
-  constructor(private carritoService: CarritoService) { }
+  customerForm: FormGroup;
+
+  constructor(private carritoService: CarritoService, private _fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.obtenerProductosEnCarrito();
     this.calcularTotalCompra();
-    
+    this.inicializarCustomerForm();
+  }
+
+  inicializarCustomerForm(): void {
+    this.customerForm = this._fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.email, Validators.required]],
+    })
   }
 
   obtenerProductosEnCarrito(): void {

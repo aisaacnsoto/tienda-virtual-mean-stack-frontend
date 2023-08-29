@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { loadScript } from '@paypal/paypal-js';
+import { CarritoService } from 'src/app/services/carrito.service';
 
 import { environment } from 'src/environments/environment';
 const PAYPAL_CLIENT_ID = environment.PAYPAL_CLIENT_ID;
@@ -15,7 +17,13 @@ export class PasarelaPagoComponent implements OnInit {
   @Input()
   amount: number;
 
-  constructor() { }
+  @Input()
+  customer: any;
+  
+  @Input()
+  proceed: boolean;
+
+  constructor(private _router: Router, private _carritoService: CarritoService) { }
 
   ngOnInit(): void {
     this.cargatBotonPaypal();
@@ -46,13 +54,17 @@ export class PasarelaPagoComponent implements OnInit {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  orderID: data.orderID
+                  orderID: data.orderID,
+                  total: this.amount,
+                  customer: this.customer
                 })
               })
                 .then((response) => response.json())
                 .then((orderData) => {
-                  const transaction = orderData.purchase_units[0].payments.captures[0];
-                  console.log(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                  this._carritoService.vaciarCarrito();
+                  this._router.navigateByUrl('confirmation');
+                  // const transaction = orderData.purchase_units[0].payments.captures[0];
+                  // console.log(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
                 });
             },
           })
