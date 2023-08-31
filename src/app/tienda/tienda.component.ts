@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CarritoService } from '../services/carrito.service';
 import { Producto } from '../models/producto.model';
+import { ProductoService } from '../services/producto.service';
 
 
 @Component({
@@ -12,17 +13,14 @@ import { Producto } from '../models/producto.model';
 export class TiendaComponent implements OnInit {
   productos: Producto[] = [];
 
-  constructor(private http: HttpClient, private carritoService: CarritoService) { }
-
-  // apiUrl = 'https://tienda-virtual-mean-stack-backend.onrender.com';
-  apiUrl = 'http://localhost:3000';
+  constructor(private _productService: ProductoService, private carritoService: CarritoService) { }
 
   ngOnInit(): void {
     this.obtenerProductos();
   }
 
   obtenerProductos(): void {
-    this.http.get<Producto[]>(this.apiUrl+'/api/productos')
+    this._productService.getProducts()
       .subscribe(productos => this.productos = productos);
   }
 
